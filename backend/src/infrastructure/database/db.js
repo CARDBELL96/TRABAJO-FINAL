@@ -1,0 +1,26 @@
+import sql from 'mssql';
+import { env } from '../config/env.js';
+
+const dbSettings = {
+  user: env.DB.USER,
+  password: env.DB.PASSWORD,
+  server: env.DB.SERVER,
+  database: env.DB.DATABASE,
+  options: {
+    encrypt: false, // Para desarrollo local. En producción (ej. Azure), debería ser true.
+    trustServerCertificate: true, // Cambiar a false en producción y configurar certificados
+  },
+  port: env.DB.PORT,
+};
+
+export async function connectDB() {
+  try {
+    await sql.connect(dbSettings);
+    console.log('Conexión a SQL Server establecida correctamente.');
+  } catch (error) {
+    console.error('Error al conectar con la base de datos:', error);
+    process.exit(1);
+  }
+}
+
+export { sql };
