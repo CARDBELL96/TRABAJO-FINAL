@@ -11,7 +11,7 @@ const KanbanColumn = ({ title, tasks, onStatusChange, className }) => (
         <div key={task.id} className={`kanban-task-card card-priority-${task.prioridad}`}>
           <h4>{task.titulo}</h4>
           <p>{task.descripcion}</p>
-          <div className="kanban-task-footer">
+          <div className="kanban-task-footer"> {/* Added formatDate for consistency */}
             <span className={`badge badge-priority-${task.prioridad}`}>{task.prioridad}</span>
             <span>{task.fecha_limite?.split('T')[0]}</span>
             <div className="select-wrapper">
@@ -45,6 +45,10 @@ const Kanban = () => {
 
   useEffect(() => {
     loadTasks();
+  }, []);
+
+  useEffect(() => {
+    document.title = "TaskFlow | Kanban";
   }, []);
 
   const handleStatusChange = async (task, newStatus) => {

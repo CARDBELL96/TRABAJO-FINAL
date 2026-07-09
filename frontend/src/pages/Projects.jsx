@@ -42,6 +42,10 @@ const Projects = () => {
     loadProjects();
   }, []);
 
+  useEffect(() => {
+    document.title = "TaskFlow | Proyectos";
+  }, []);
+
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -219,8 +223,8 @@ const Projects = () => {
 
       <div className="list-header">
         <h2>Mis proyectos</h2>
-        <div className="search-bar">
-          <Search size={18} className="search-icon" />
+        <div className="search-box">
+          <Search size={20} className="search-icon" />
           <input
             type="text"
             placeholder="Buscar proyecto..."
@@ -264,13 +268,37 @@ const Projects = () => {
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content project-detail-modal" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={handleCloseModal}><X size={24} /></button>
-            <h2>{selectedProject.nombre}</h2>
-            <p className="project-detail-description">{selectedProject.descripcion}</p>
+
+            <div className="project-modal-header">
+              <div className="project-modal-icon">📁</div>
+              <div className="project-modal-title">
+                <h2>{selectedProject.nombre}</h2>
+                <span className={`status-badge ${selectedProject.estado.toLowerCase().replace(' ', '-')}`}>{selectedProject.estado}</span>
+              </div>
+            </div>
+
+            <div className="project-modal-section">
+              <h4>Descripción</h4>
+              <div className="project-modal-desc-card">
+                <p>{selectedProject.descripcion || 'Sin descripción.'}</p>
+              </div>
+            </div>
+
+            <div className="project-modal-dates">
+              <div className="date-mini-card">
+                <span className="date-label">Inicio</span>
+                <strong>{formatDate(selectedProject.fecha_inicio)}</strong>
+              </div>
+              <div className="date-mini-card">
+                <span className="date-label">Fin</span>
+                <strong>{formatDate(selectedProject.fecha_fin)}</strong>
+              </div>
+            </div>
+
             <div className="project-detail-meta">
-              <div><span>Estado</span><span className={`badge badge-status-${selectedProject.estado.toLowerCase().replace(' ', '-')}`}>{selectedProject.estado}</span></div>
-              <div><span>Inicio</span><span>{formatDate(selectedProject.fecha_inicio)}</span></div>
-              <div><span>Fin</span><span>{formatDate(selectedProject.fecha_fin)}</span></div>
-              {selectedProject.creado_en && <div><span>Creado</span><span>{formatDate(selectedProject.creado_en)}</span></div>}
+              {selectedProject.creado_en && (
+                <div><span>Creado</span><span>{formatDate(selectedProject.creado_en)}</span></div>
+              )}
             </div>
           </div>
         </div>

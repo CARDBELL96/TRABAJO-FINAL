@@ -30,6 +30,10 @@ const Tasks = () => {
     loadData();
   }, []);
 
+  useEffect(() => {
+    document.title = "TaskFlow | Tareas";
+  }, []);
+
   const handleOpenModal = (task = null) => {
     setSelectedTask(task);
     setIsModalOpen(true);

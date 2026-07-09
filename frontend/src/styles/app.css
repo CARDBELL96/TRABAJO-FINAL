@@ -1,25 +1,36 @@
 :root {
-  --bg: #f4f6fb;
-  --panel: #ffffff;
-  --text: #111827;
-  --muted: #6b7280;
-  --primary: #4f46e5;
-  --primary-gradient: linear-gradient(90deg, #4f46e5, #7c3aed);
+  --bg: #F4F7FB;
+  --sidebar-bg: #FFFFFF;
+  --panel: #FFFFFF;
+  --input-bg: #F8FAFC;
+  --text: #0F172A; /* Texto principal */
+  --text-primary: #0F172A; /* Números de cards estadísticas, nombres de usuario */
+  --muted: #334155; /* Texto secundario, iconos, títulos de cards estadísticas */
+  --primary: #3B82F6; /* Azul principal para derivar light/glow */
+  --primary-gradient: linear-gradient(90deg, #3B82F6, #8B5CF6);
+  --primary-light: color-mix(in srgb, var(--primary) 25%, transparent); /* Para focus glow */
+  --primary-glow: rgba(59, 130, 246, 0.25); /* Un glow específico para modo claro */
   --danger: #ef4444;
-  --border: #e5e7eb;
-  --shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
+  --border: #E2E8F0;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --hover-light: #EEF2FF; /* Color de hover para elementos claros */
 }
 
 [data-theme="dark"] {
   --bg: #0F172A;
   --panel: #273244;
   --text: #f8fafc;
+  --text-primary: #f8fafc; /* Para números de estadísticas, etc. */
   --muted: #9ca3af;
+  --input-bg: #313D50;
   --primary: #8b5cf6;
   --primary-gradient: linear-gradient(90deg, #7c3aed, #a78bfa);
+  --primary-light: color-mix(in srgb, var(--primary) 25%, transparent); /* Para focus glow */
+  --primary-glow: rgba(139, 92, 246, 0.25); /* Un glow específico para modo oscuro */
   --danger: #f87171;
   --border: #334155;
   --shadow: 0 8px 24px rgba(0,0,0,0.3);
+  --sidebar-bg: #1B2433;
 }
 
 * {
@@ -59,7 +70,7 @@ body {
 input, textarea, select {
   width: 100%;
   padding: 14px;
-  background: #313D50;
+  background: var(--input-bg);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -97,11 +108,7 @@ button.danger {
   background: var(--danger);
 }
 
-button.edit {
-  background: var(--danger);
-}
-
-button.edit {
+button.edit { /* Corregido para usar el color primario */
   background: var(--primary);
 }
 
@@ -142,38 +149,7 @@ button.edit {
 .stat-number {
   margin-top: 42px;
   font-size: 52px;
-  font-weight: 900;
-  color: #ffffff;
+  font-weight: 700; /* Ajustado para consistencia */
+  color: var(--text); /* Usa la variable de texto principal */
   line-height: 1;
-}
-
-.stat-card {
-  background: #1f2937;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 22px;
-  padding: 28px;
-  min-height: 180px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 18px 40px rgba(0,0,0,.22);
-}
-
-.stat-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 6px;
-  width: 100%;
-}
-
-.stat-card.projects::before { background: #3b82f6; }
-.stat-card.pending::before { background: #8b5cf6; }
-.stat-card.progress::before { background: #06b6d4; }
-.stat-card.completed::before { background: #22c55e; }
-
-.stat-card h3 {
-  margin: 0;
-  color: #f8fafc;
-  font-size: 20px;
 }

@@ -9,14 +9,14 @@
   left: 0;
   width: 260px;
   height: 100vh;
-  background: #1B2433;
-  color: white;
+  background: var(--sidebar-bg);
+  color: var(--text);
   padding: 28px 20px;
   display: flex;
   flex-direction: column;
   z-index: 1000;
-  border-right: 1px solid #334155;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+  border-right: 1px solid var(--border);
+  box-shadow: var(--shadow);
   transition: background-color 0.3s;
 }
 
@@ -33,12 +33,64 @@
 }
 
 .sidebar-nav a {
-  color: #d1d5db;
+  color: var(--muted);
   text-decoration: none;
   padding: 14px 16px;
   border-radius: 12px;
   font-weight: 700;
   transition: 0.25s ease;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: var(--input-bg);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.user-name, .user-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.user-email {
+  font-size: 0.8rem;
+  color: var(--muted);
 }
 
 .sidebar-nav a:hover,
@@ -64,16 +116,16 @@
   transform: translateY(-2px);
 }
 
-.icon-btn.secondary {
-  margin-top: auto;
-  align-self: center;
-  background: #1e293b;
-}
-
 .icon-btn.danger {
-  margin-top: 20px;
   align-self: center;
-  background: #374151;
+  background: var(--input-bg);
+  color: var(--danger);
+  border: 1px solid var(--border);
+}
+.icon-btn.danger:hover {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
 }
 
 .main-content {
@@ -81,6 +133,6 @@
   width: calc(100% - 260px);
   min-height: 100vh;
   padding: 48px;
-  background: #0F172A;
+  background: var(--bg);
   overflow-y: auto;
 }

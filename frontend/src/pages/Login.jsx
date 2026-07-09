@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../services/authService';
 
@@ -8,6 +8,10 @@ const Login = () => {
   const [email, setEmail] = useState('frank@gmail.com');
   const [password, setPassword] = useState('12345678');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    document.title = "TaskFlow | Iniciar sesión";
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();

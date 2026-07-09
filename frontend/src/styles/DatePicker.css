@@ -1,12 +1,12 @@
 /* Estilos para el input del DatePicker */
 .date-picker-input {
   width: 100%;
-  padding: 12px 16px;
-  background-color: var(--input-bg, #1f2937);
-  border: 1px solid var(--border, #374151);
+  padding: 14px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  color: var(--text-primary, white);
-  font-size: 16px;
+  color: var(--text);
+  font-size: 14px;
 }
 
 .date-picker-input:focus {
@@ -18,23 +18,23 @@
 /* Contenedor principal del calendario */
 .react-datepicker {
   font-family: inherit;
-  background-color: #263241; /* Fondo de tarjetas */
-  border: 1px solid #374151; /* Borde */
+  background-color: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  color: white; /* Texto blanco */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  color: var(--text);
+  box-shadow: var(--shadow);
 }
 
 /* Flecha del popover */
 .react-datepicker__triangle::before,
 .react-datepicker__triangle::after {
-  border-bottom-color: #263241 !important;
+  border-bottom-color: var(--panel) !important;
 }
 
 /* Cabecera del calendario */
 .react-datepicker__header {
-  background-color: #1f2937; /* Fondo principal */
-  border-bottom: 1px solid #374151;
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
@@ -42,36 +42,36 @@
 .react-datepicker__current-month,
 .react-datepicker-time__header,
 .react-datepicker-year-header {
-  color: white;
+  color: var(--text);
   font-weight: 600;
 }
 
 /* Botones de navegación (flechas) */
 .react-datepicker__navigation-icon::before {
-  border-color: white;
+  border-color: var(--text);
 }
 
 /* Nombres de los días (Lu, Ma, Mi...) */
 .react-datepicker__day-name {
-  color: #9ca3af; /* Un gris claro para los nombres de los días */
+  color: var(--muted);
   font-weight: 600;
 }
 
 /* Días del mes */
 .react-datepicker__day {
-  color: white;
+  color: var(--text);
   border-radius: 8px;
   transition: background-color 0.2s ease;
 }
 
 .react-datepicker__day:hover {
-  background-color: #374151; /* Hover con un tono más claro */
+  background-color: var(--hover-light, #EEF2FF); /* Usar variable para consistencia */
 }
 
 .react-datepicker__day--selected,
 .react-datepicker__day--in-selecting-range,
 .react-datepicker__day--in-range {
-  background: linear-gradient(to right, #4f46e5, #a855f7); /* Degradado azul-morado */
+  background: var(--primary-gradient);
   color: white;
 }
 

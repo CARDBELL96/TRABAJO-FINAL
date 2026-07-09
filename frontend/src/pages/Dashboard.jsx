@@ -1,60 +1,7 @@
-import { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { FolderKanban, ListTodo, LoaderCircle, CheckCircle2, Plus, Edit, Trash, X } from 'lucide-react';
+﻿import { useEffect, useState } from 'react';
+import { FolderKanban, ListTodo, LoaderCircle, CheckCircle2, Plus, X } from 'lucide-react';
 import { getProjects } from '../services/projectService.js';
 import { getTasks } from '../services/taskService.js';
-
-// Datos simulados para el gráfico y las listas
-const weeklyActivityData = [
-  { day: 'Lun', tasks: 3 },
-  { day: 'Mar', tasks: 5 },
-  { day: 'Mié', tasks: 2 },
-  { day: 'Jue', tasks: 7 },
-  { day: 'Vie', tasks: 6 },
-  { day: 'Sáb', tasks: 4 },
-  { day: 'Dom', tasks: 1 },
-];
-
-const recentEventsData = [
-  { icon: <CheckCircle2 size={18} className="text-green" />, text: 'Tarea "Implementar Login" completada.' },
-  { icon: <Plus size={18} className="text-purple" />, text: 'Nueva tarea "CRUD Usuarios" agregada.' },
-  { icon: <Edit size={18} className="text-cyan" />, text: 'Proyecto "TaskFlow" actualizado.' },
-  { icon: <Plus size={18} className="text-blue" />, text: 'Proyecto "Startup" creado.' },
-  { icon: <Trash size={18} className="text-red" />, text: 'Tarea "Diseño inicial" eliminada.' },
-];
-
-const getBarColorAndWorkload = (tasks) => {
-  if (tasks <= 2) return { color: '#3B82F6', workload: 'Carga baja' }; // Azul
-  if (tasks <= 4) return { color: '#38BDF8', workload: 'Carga normal' }; // Cian
-  if (tasks <= 6) return { color: '#8B5CF6', workload: 'Carga alta' }; // Morado
-  return { color: '#C084FC', workload: 'Carga crítica' }; // Magenta
-};
-
-const processedWeeklyData = weeklyActivityData.map(item => {
-  const { color, workload } = getBarColorAndWorkload(item.tasks);
-  return { ...item, fill: color, workload };
-});
-
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    return (
-      <div className="custom-tooltip">
-        <p className="tooltip-label">{`Día: ${label}`}</p>
-        <p className="tooltip-intro">{`Tareas registradas: ${data.tasks}`}</p>
-        <p className="tooltip-workload" style={{ color: data.fill }}>{data.workload}</p>
-      </div>
-    );
-  }
-
-  return null;
-};
-
-const HoveredBar = (props) => {
-  const { fill, x, y, width, height } = props;
-  // Aumenta el brillo en el hover
-  return <rect x={x} y={y} width={width} height={height} fill={fill} fillOpacity="1.1" />;
-};
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -64,51 +11,204 @@ const Dashboard = () => {
     completadas: 0,
   });
   const [recentTasks, setRecentTasks] = useState([]);
-  const [projects, setProjects] = useState([]);
+  const [dynamicRecentEvents, setDynamicRecentEvents] = useState([]);
   const [modalData, setModalData] = useState({
     isOpen: false,
     title: '',
     items: [],
-    type: '', // 'project' or 'task'
+    type: '',
   });
-
   const [allTasks, setAllTasks] = useState([]);
+  const [allProjects, setAllProjects] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const date = new Date();
+    date.setDate(1);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  });
+  const [calendarDays, setCalendarDays] = useState([]);
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDayTasks, setSelectedDayTasks] = useState([]);
 
   useEffect(() => {
     const loadDashboard = async () => {
       try {
         const [projectsData, tasksData] = await Promise.all([getProjects(), getTasks()]);
-        
-        setProjects(projectsData);
-        setAllTasks(tasksData);
+        console.log('projectsData:', projectsData);
+        console.log('tasksData:', tasksData);
 
+        const userTasks = tasksData;
+        const userProjects = projectsData;
+        console.log('userTasks:', userTasks);
+        console.log('userProjects:', userProjects);
+
+        setAllTasks(userTasks);
+        setAllProjects(userProjects);
         setStats({
-          proyectos: projectsData.filter((p) => p.estado === 'Activo').length,
-          pendientes: tasksData.filter((t) => t.estado === 'Pendiente').length,
-          enProgreso: tasksData.filter((t) => t.estado === 'En progreso').length,
-          completadas: tasksData.filter((t) => t.estado === 'Completada').length,
+          proyectos: userProjects.length,
+          pendientes: userTasks.filter(t => t.estado?.toLowerCase() === 'pendiente').length,
+          enProgreso: userTasks.filter(t => t.estado?.toLowerCase() === 'en progreso').length,
+          completadas: userTasks.filter(t => t.estado?.toLowerCase() === 'completada').length,
         });
 
-        // Ordenar tareas por fecha de creación y tomar las 5 más recientes
-        const sortedTasks = [...tasksData].sort((a, b) => new Date(b.creado_en) - new Date(a.creado_en));
-        setRecentTasks(sortedTasks.slice(0, 5));
+        const priorityTasks = userTasks
+          .filter(t => {
+            const prioridad = t.prioridad?.toLowerCase();
+            return prioridad === 'alta' || prioridad === 'media';
+          })
+          .sort((a, b) => new Date(b.creado_en) - new Date(a.creado_en))
+          .slice(0, 5);
 
+        setRecentTasks(priorityTasks);
+        setDynamicRecentEvents(getRecentEvents(userTasks, userProjects));
       } catch (error) {
-        console.error("Error al cargar datos del dashboard:", error);
-        // Fallback a datos simulados si la carga falla
-        setRecentTasks([
-            { id: 1, titulo: 'Implementar Login', proyecto_id: 1, prioridad: 'Alta' },
-            { id: 2, titulo: 'CRUD Usuarios', proyecto_id: 2, prioridad: 'Media' },
-            { id: 3, titulo: 'Diseñar Dashboard', proyecto_id: 1, prioridad: 'Baja' },
-        ]);
+        console.error('Error al cargar datos del dashboard:', error);
       }
     };
 
     loadDashboard();
   }, []);
 
+  useEffect(() => {
+    document.title = 'TaskFlow | Dashboard';
+  }, []);
+
+  useEffect(() => {
+    setCalendarDays(getMonthDays(currentMonth, allTasks));
+  }, [currentMonth, allTasks]);
+
+  const formatDateKey = (date) => {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  };
+
+  const getTasksByDate = (tasks) => {
+    return tasks.reduce((map, task) => {
+      if (!task.fecha_limite) return map;
+      const dueDate = new Date(task.fecha_limite);
+      if (Number.isNaN(dueDate.getTime())) return map;
+      dueDate.setHours(0, 0, 0, 0);
+      const key = formatDateKey(dueDate);
+      if (!map[key]) map[key] = [];
+      map[key].push(task);
+      return map;
+    }, {});
+  };
+
+  const getMonthDays = (month, tasks) => {
+    const firstDayOfMonth = new Date(month);
+    const year = firstDayOfMonth.getFullYear();
+    const monthIndex = firstDayOfMonth.getMonth();
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+    const firstWeekDay = firstDayOfMonth.getDay();
+    const tasksByDate = getTasksByDate(tasks);
+    const totalCells = firstWeekDay + daysInMonth;
+    const trailingCells = (7 - (totalCells % 7)) % 7;
+
+    const days = Array.from({ length: totalCells }, (_, index) => {
+      if (index < firstWeekDay) {
+        return { date: null };
+      }
+
+      const dayNumber = index - firstWeekDay + 1;
+      const date = new Date(year, monthIndex, dayNumber);
+      const dateKey = formatDateKey(date);
+      const dayTasks = tasksByDate[dateKey] || [];
+      const count = dayTasks.length;
+
+      return {
+        date,
+        dayNumber,
+        count,
+        label: getWorkloadLabel(count),
+        className: getWorkloadClass(count),
+        tasks: dayTasks,
+        dateKey,
+      };
+    });
+
+    return [...days, ...Array.from({ length: trailingCells }, () => ({ date: null }))];
+  };
+
+  const getWorkloadLabel = (count) => {
+    if (count === 0) return 'Libre';
+    if (count <= 2) return 'Carga baja';
+    if (count <= 4) return 'Carga media';
+    return 'Carga alta';
+  };
+
+  const getWorkloadClass = (count) => {
+    if (count === 0) return 'workload-free';
+    if (count <= 2) return 'workload-low';
+    if (count <= 4) return 'workload-medium';
+    return 'workload-high';
+  };
+
+  const handlePrevMonth = () => {
+    setCurrentMonth(prev => {
+      const date = new Date(prev);
+      date.setMonth(prev.getMonth() - 1);
+      date.setDate(1);
+      return date;
+    });
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(prev => {
+      const date = new Date(prev);
+      date.setMonth(prev.getMonth() + 1);
+      date.setDate(1);
+      return date;
+    });
+  };
+
+  const handleDayClick = (day) => {
+    if (!day.date) return;
+    setSelectedDay(day.dateKey);
+    setSelectedDayTasks(day.tasks);
+  };
+
+  const closeDayModal = () => {
+    setSelectedDay(null);
+    setSelectedDayTasks([]);
+  };
+
+  const getRecentEvents = (tasks, projects) => {
+    const events = [];
+
+    tasks.forEach(task => {
+      events.push({
+        date: new Date(task.creado_en),
+        icon: <Plus size={18} className="color-blue" />,
+        text: `Tarea "${task.titulo}" creada.`,
+        type: 'task_created',
+        id: `task_created_${task.id}`,
+      });
+      if (task.estado === 'Completada') {
+        events.push({
+          date: new Date(task.fecha_limite || task.creado_en),
+          icon: <CheckCircle2 size={18} className="color-green" />,
+          text: `Tarea "${task.titulo}" completada.`,
+          type: 'task_completed',
+          id: `task_completed_${task.id}`,
+        });
+      }
+    });
+
+    projects.forEach(project => {
+      events.push({
+        date: new Date(project.creado_en || project.fecha_inicio),
+        icon: <FolderKanban size={18} className="color-purple" />,
+        text: `Proyecto "${project.nombre}" creado.`,
+        type: 'project_created',
+        id: `project_created_${project.id}`,
+      });
+    });
+
+    return events.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 7);
+  };
+
   const getProjectName = (projectId) => {
-    const project = projects.find(p => p.id === projectId);
+    const project = allProjects.find(p => p.id === projectId);
     return project ? project.nombre : 'Proyecto Desconocido';
   };
 
@@ -119,7 +219,7 @@ const Dashboard = () => {
     switch (type) {
       case 'proyectos':
         title = 'Proyectos Activos';
-        items = projects.filter(p => p.estado === 'Activo');
+        items = allProjects.filter(p => p.estado === 'Activo');
         break;
       case 'pendientes':
         title = 'Tareas Pendientes';
@@ -177,24 +277,42 @@ const Dashboard = () => {
 
       <div className="card large-card">
         <div>
-          <h2 className="card-title">Actividad de la semana</h2>
-          <p className="card-subtitle">Cantidad de tareas registradas durante la semana.</p>
+          <h2 className="card-title">Carga mensual</h2>
+          <p className="card-subtitle">Visualiza los días con mayor concentración de tareas según fecha límite.</p>
         </div>
         <div className="card-content-grid">
           <div className="chart-container">
-            <ResponsiveContainer width="100%" height={350} className="recharts-responsive-container">
-              <BarChart data={processedWeeklyData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="day" stroke="var(--muted)" fontSize={12} />
-                <YAxis stroke="var(--muted)" fontSize={12} />
-                <Tooltip content={<CustomTooltip />} cursor={false} />
-                <Bar dataKey="tasks" radius={[4, 4, 0, 0]} animationDuration={800} activeBar={<HoveredBar />}>
-                  {processedWeeklyData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="monthly-calendar-header">
+              <button className="calendar-nav-button" onClick={handlePrevMonth}>&larr;</button>
+              <div>
+                <h3>{currentMonth.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</h3>
+              </div>
+              <button className="calendar-nav-button" onClick={handleNextMonth}>&rarr;</button>
+            </div>
+            <div className="calendar-grid">
+              {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map(day => (
+                <div key={day} className="calendar-weekday">
+                  {day}
+                </div>
+              ))}
+              {calendarDays.map((day, index) => (
+                <button
+                  key={`${day.dateKey || index}`}
+                  type="button"
+                  className={`calendar-day ${day.date ? '' : 'calendar-day-inactive'} ${day.className}`}
+                  onClick={() => handleDayClick(day)}
+                  disabled={!day.date}
+                >
+                  {day.date ? (
+                    <>
+                      <div className="calendar-day-number">{day.dayNumber}</div>
+                      <div className="calendar-day-tasks">{day.count} tareas</div>
+                      <small>{day.label}</small>
+                    </>
+                  ) : null}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="priority-tasks-container">
             <h3 className="list-title">Tareas prioritarias</h3>
@@ -214,16 +332,48 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {selectedDay && (
+        <div className="modal-overlay" onClick={closeDayModal}>
+          <div className="modal-content dashboard-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Tareas del {new Date(selectedDay).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</h2>
+              <button className="modal-close" onClick={closeDayModal}><X size={24} /></button>
+            </div>
+            <div className="modal-body">
+              {selectedDayTasks.length > 0 ? (
+                <ul className="modal-list">
+                  {selectedDayTasks.map(task => (
+                    <li key={task.id} className="modal-list-item">
+                      <div>
+                        <strong>{task.titulo}</strong>
+                        <div className="modal-list-item-project">{getProjectName(task.proyecto_id)}</div>
+                        <div>{task.prioridad} · {task.estado}</div>
+                        <div>{new Date(task.fecha_limite).toLocaleDateString('es-ES')}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="empty-list-text">No hay tareas para este día.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="card">
         <h2 className="card-title">Registro de actividad</h2>
         <ul className="activity-log">
-          {recentEventsData.map((event, index) => (
-            <li key={index} className="activity-log-item">
-              <div className="activity-icon">{event.icon}</div>
-              <span>{event.text}</span>
-            </li>
-          ))}
+          {dynamicRecentEvents.length > 0 ? (
+            dynamicRecentEvents.map((event, index) => (
+              <li key={index} className="activity-log-item">
+                <div className="activity-icon">{event.icon}</div>
+                <span>{event.text}</span>
+              </li>
+            ))
+          ) : (
+            <p className="empty-list-text">No hay actividad reciente.</p>
+          )}
         </ul>
       </div>
 
