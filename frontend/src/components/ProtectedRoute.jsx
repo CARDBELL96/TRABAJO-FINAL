@@ -1,11 +1,13 @@
-import { Navigate } from 'react-router-dom';
-import Layout from './Layout';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-  // Simulación de autenticación
-  const isAuthenticated = localStorage.getItem('isAuthenticated');
+  const token = localStorage.getItem('token');
 
-  return isAuthenticated ? <Layout /> : <Navigate to="/login" />;
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

@@ -1,0 +1,86 @@
+.app-layout {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: #1B2433;
+  color: white;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  border-right: 1px solid #334155;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.sidebar-logo {
+  margin: 0 0 40px;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sidebar-nav a {
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  transition: 0.25s ease;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background: linear-gradient(135deg, #2563eb, #8b5cf6);
+  color: white;
+}
+
+.icon-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  transition: 0.25s ease;
+}
+
+.icon-btn:hover {
+  transform: translateY(-2px);
+}
+
+.icon-btn.secondary {
+  margin-top: auto;
+  align-self: center;
+  background: #1e293b;
+}
+
+.icon-btn.danger {
+  margin-top: 20px;
+  align-self: center;
+  background: #374151;
+}
+
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-height: 100vh;
+  padding: 48px;
+  background: #0F172A;
+  overflow-y: auto;
+}

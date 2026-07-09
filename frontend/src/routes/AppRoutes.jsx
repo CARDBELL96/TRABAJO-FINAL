@@ -6,6 +6,7 @@ import Projects from '../pages/Projects';
 import Tasks from '../pages/Tasks';
 import Kanban from '../pages/Kanban';
 import ProtectedRoute from '../components/ProtectedRoute';
+import Layout from '../components/Layout';
 
 const AppRoutes = () => {
   return (
@@ -16,10 +17,12 @@ const AppRoutes = () => {
 
       {/* Rutas Protegidas */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/kanban" element={<Kanban />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/kanban" element={<Kanban />} />
+        </Route>
       </Route>
     </Routes>
   );

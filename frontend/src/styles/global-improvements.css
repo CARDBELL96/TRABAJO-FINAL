@@ -1,0 +1,466 @@
+/* === MEJORAS GLOBALES DE UI/UX === */
+
+.page-subtitle {
+  color: var(--muted);
+  margin-top: -16px;
+  margin-bottom: 32px;
+}
+
+/* 1. Transiciones Suaves */
+button, a, .card, .task-row, .kanban-task-card, input, select, textarea {
+  transition: all 0.25s ease;
+}
+
+/* 2. Estilos de Botones y Foco */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .date-picker-input:focus-visible {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+/* === DASHBOARD === */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.stat-card:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.stat-card.border-blue { border-top: 4px solid #3b82f6; }
+.stat-card.border-purple { border-top: 4px solid #a855f7; }
+.stat-card.border-cyan { border-top: 4px solid #22d3ee; }
+.stat-card.border-green { border-top: 4px solid #22c55e; }
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  border-color: var(--primary-light);
+}
+
+.stat-icon {
+  color: var(--muted);
+}
+
+.stat-number {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1;
+}
+
+.stat-title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* === PROYECTOS === */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  border-color: var(--primary-light);
+}
+
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.project-card-header h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.project-icon {
+  font-size: 1.2em;
+}
+
+.project-description {
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.project-card-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.project-dates {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.badge-status-activo { background-color: #22c55e; color: white; }
+.badge-status-en-progreso { background: linear-gradient(to right, #22d3ee, #a855f7); color: white; }
+.badge-status-finalizado { background-color: #6b7280; color: white; }
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0 24px;
+}
+
+/* === TAREAS === */
+.empty-state {
+  text-align: center;
+  padding: 64px 24px;
+  background: var(--panel);
+  border: 1px dashed var(--border);
+  border-radius: 18px;
+  margin-top: 24px;
+}
+.empty-state h3 {
+  margin: 0 0 8px;
+}
+.empty-state p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.custom-tooltip .tooltip-workload {
+  margin: 4px 0 0;
+  font-weight: 600;
+}
+
+/* Eliminar el borde de foco en el gráfico de Recharts */
+.recharts-responsive-container:focus-visible,
+.recharts-wrapper:focus-visible,
+.recharts-surface:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* === KANBAN === */
+.kanban-column {
+  position: relative;
+  padding-top: 8px;
+}
+.kanban-column::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 4px 4px 0 0;
+}
+.kanban-column.col-pendiente::before { background: linear-gradient(to right, #3b82f6, #a855f7); }
+.kanban-column.col-en-progreso::before { background-color: #22d3ee; }
+.kanban-column.col-completada::before { background-color: #22c55e; }
+
+.kanban-column-title span {
+  display: inline-block;
+  background-color: var(--input-bg);
+  color: var(--muted);
+  font-size: 0.8em;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+.kanban-task-card {
+  position: relative;
+  padding-left: 16px;
+}
+.kanban-task-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  width: 4px;
+  border-radius: 4px;
+}
+
+.kanban-task-card.card-priority-Alta::before { background-color: #ef4444; }
+.kanban-task-card.card-priority-Media::before { background-color: #f59e0b; }
+.kanban-task-card.card-priority-Baja::before { background-color: #22c55e; }
+
+.kanban-task-card:hover {
+  transform: translateY(-2px);
+  background-color: color-mix(in srgb, var(--primary) 5%, var(--panel));
+}
+
+.kanban-no-tasks {
+  border: 2px dashed var(--border);
+  color: var(--muted);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* === DASHBOARD - SECCIONES GRANDES === */
+.large-card {
+  grid-column: 1 / -1;
+  margin-top: 40px;
+  padding: 32px;
+}
+
+.card-subtitle {
+  color: var(--muted);
+  margin-top: 4px;
+  margin-bottom: 32px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+ 
+.card-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+.list-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.priority-tasks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.priority-task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.priority-task-item .task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.priority-task-item .task-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.priority-task-item .task-project {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.empty-list-text {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.activity-log {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activity-log-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+}
+
+.activity-icon {
+  display: grid;
+  place-items: center;
+}
+
+.text-green { color: #22c55e; }
+.text-purple { color: #a855f7; }
+.text-cyan { color: #22d3ee; }
+.text-blue { color: #3b82f6; }
+.text-red { color: #ef4444; }
+
+/* === RESPONSIVE === */
+@media (max-width: 1200px) {
+  .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+  .card-content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+/* === BÚSQUEDA === */
+.search-bar {
+  position: relative;
+  width: 300px;
+}
+.search-bar .search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+.search-bar input {
+  padding-left: 44px;
+}
+
+/* === MODAL DE DETALLES DE PROYECTO === */
+.project-detail-modal .modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  color: var(--muted);
+}
+.project-detail-modal .modal-close:hover {
+  color: var(--text);
+}
+.project-detail-description {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.project-detail-meta {
+  display: grid;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+.project-detail-meta > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.project-detail-meta > div span:first-child {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* === DASHBOARD MODAL === */
+.dashboard-modal {
+  width: 90%;
+  max-width: 600px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+.modal-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.modal-list-item-project {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* === RECHARTS TOOLTIP === */
+.custom-tooltip {
+  background: #0F172A;
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+.custom-tooltip .tooltip-label {
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.custom-tooltip .tooltip-intro {
+  margin: 0;
+  color: var(--muted);
+}

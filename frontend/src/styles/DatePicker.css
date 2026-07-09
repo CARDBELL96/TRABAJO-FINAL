@@ -1,0 +1,81 @@
+/* Estilos para el input del DatePicker */
+.date-picker-input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--input-bg, #1f2937);
+  border: 1px solid var(--border, #374151);
+  border-radius: 12px;
+  color: var(--text-primary, white);
+  font-size: 16px;
+}
+
+.date-picker-input:focus {
+  outline: none;
+  border-color: var(--primary, #4f46e5);
+  box-shadow: 0 0 0 2px var(--primary-light, rgba(79, 70, 229, 0.5));
+}
+
+/* Contenedor principal del calendario */
+.react-datepicker {
+  font-family: inherit;
+  background-color: #263241; /* Fondo de tarjetas */
+  border: 1px solid #374151; /* Borde */
+  border-radius: 12px;
+  color: white; /* Texto blanco */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Flecha del popover */
+.react-datepicker__triangle::before,
+.react-datepicker__triangle::after {
+  border-bottom-color: #263241 !important;
+}
+
+/* Cabecera del calendario */
+.react-datepicker__header {
+  background-color: #1f2937; /* Fondo principal */
+  border-bottom: 1px solid #374151;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: white;
+  font-weight: 600;
+}
+
+/* Botones de navegación (flechas) */
+.react-datepicker__navigation-icon::before {
+  border-color: white;
+}
+
+/* Nombres de los días (Lu, Ma, Mi...) */
+.react-datepicker__day-name {
+  color: #9ca3af; /* Un gris claro para los nombres de los días */
+  font-weight: 600;
+}
+
+/* Días del mes */
+.react-datepicker__day {
+  color: white;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.react-datepicker__day:hover {
+  background-color: #374151; /* Hover con un tono más claro */
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range {
+  background: linear-gradient(to right, #4f46e5, #a855f7); /* Degradado azul-morado */
+  color: white;
+}
+
+.react-datepicker__day--disabled {
+  color: #4b5563;
+  cursor: not-allowed;
+}

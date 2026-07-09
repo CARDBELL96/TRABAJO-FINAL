@@ -1,38 +1,52 @@
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { login } from '../services/authService';
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Simulación de login exitoso
-    localStorage.setItem('isAuthenticated', 'true');
-    navigate('/');
-  };
+  const [email, setEmail] = useState('frank@gmail.com');
+  const [password, setPassword] = useState('12345678');
+  const [error, setError] = useState('');
 
-  const styles = {
-    container: { display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', background: '#f0f2f5' },
-    formContainer: { padding: '2rem', background: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', width: '100%', maxWidth: '400px' },
-    title: { textAlign: 'center', marginBottom: '1.5rem' },
-    form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
-    input: { padding: '0.8rem', border: '1px solid #ccc', borderRadius: '4px' },
-    link: { textAlign: 'center', marginTop: '1rem' }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (err) {
+      setError(err.message || 'Error al iniciar sesión.');
+    }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.formContainer}>
-        <h1 style={styles.title}>Iniciar Sesión en TaskFlow</h1>
-        <form onSubmit={handleLogin} style={styles.form}>
-          <input type="email" placeholder="Correo electrónico" required style={styles.input} defaultValue="test@taskflow.com" />
-          <input type="password" placeholder="Contraseña" required style={styles.input} defaultValue="password" />
-          <button type="submit" className="btn btn-primary">
-            Ingresar
-          </button>
+    <div className="login-wrapper">
+      <div className="card login-card">
+        <form onSubmit={handleLogin} className="form" style={{width: '100%'}}>
+          <h1>TaskFlow</h1>
+
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+
+          <input
+            type="email"
+            placeholder="Correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button type="submit" style={{width: '100%'}}>Ingresar</button>
+
+          <Link to="/register">Crear cuenta</Link>
         </form>
-        <div style={styles.link}>
-          ¿No tienes una cuenta? <Link to="/register">Regístrate</Link>
-        </div>
       </div>
     </div>
   );

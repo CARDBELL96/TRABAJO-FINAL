@@ -1,0 +1,143 @@
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.tasks-header h1 {
+  margin: 0;
+}
+
+.tasks-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-row {
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 20px;
+  background: var(--panel);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: 1px solid var(--border);
+}
+
+.task-row:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+  background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+}
+
+.task-row-header {
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr 1fr 1fr 1fr;
+  padding: 0 20px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.task-title {
+  font-weight: 600;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+  display: inline-block;
+  text-align: center;
+}
+
+.badge-priority-Alta {
+  background-color: #ef4444;
+  color: white;
+}
+
+.badge-priority-Media {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.badge-priority-Baja {
+  background-color: #22c55e;
+  color: white;
+}
+
+.badge-status-Pendiente {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.badge-status-En.progreso {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.badge-status-Completada {
+  background-color: #22c55e;
+  color: white;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.task-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 18px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.task-actions button:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 1024px) {
+  .task-row, .task-row-header {
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+  }
+  .task-row-header > *:nth-child(n+4),
+  .task-row > *:nth-child(n+4) {
+    display: none;
+  }
+}
+
+/* Estilos para el formulario de proyectos */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--muted);
+}
