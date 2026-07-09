@@ -3,6 +3,8 @@ import cors from "cors";
 
 import { healthRouter } from "./presentation/routes/health.routes.js";
 import { authRouter } from "./presentation/routes/AuthRoutes.js";
+import { taskRouter } from "./presentation/routes/TaskRoutes.js";
+import { projectRouter } from "./presentation/routes/ProjectRoutes.js";
 
 const app = express();
 
@@ -15,5 +17,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", healthRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/projects", projectRouter);
+app.use("/api/tasks", taskRouter);
 
 export default app;
