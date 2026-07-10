@@ -26,12 +26,12 @@ const ThemeToggle = () => {
   return (
     <div className="theme-toggle-wrapper">
       <div className="theme-toggle" data-theme={theme} onClick={toggleTheme}>
-        <button type="button" className="theme-icon-button" aria-label="Light">
+        <span className="theme-icon sun" aria-hidden tabIndex={0}>
           <Sun size={20} />
-        </button>
-        <button type="button" className="theme-icon-button" aria-label="Dark">
+        </span>
+        <span className="theme-icon moon" aria-hidden tabIndex={0}>
           <Moon size={20} />
-        </button>
+        </span>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 .theme-toggle-wrapper {
-  margin-top: auto; /* Empuja el toggle al final del sidebar */
+  margin-top: auto;
   display: flex;
   justify-content: center;
   padding-top: 20px;
@@ -7,44 +7,29 @@
 }
 
 .theme-toggle {
-  position: relative;
-  width: 80px;
-  height: 40px;
-  border-radius: 20px;
-  background-color: var(--input-bg); /* Usa el fondo de inputs para la pista del toggle */
-  border: 1px solid var(--border);
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 8px;
-  overflow: hidden;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  justify-content: center;
+  gap: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
-.theme-toggle:hover {
-  border-color: var(--primary);
-}
-
-.toggle-thumb {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--primary-gradient); /* Usa el gradiente primario para el círculo */
-  transition: transform 0.3s ease;
-  box-shadow: var(--shadow);
-}
-
-.toggle-thumb.light { transform: translateX(0); }
-.toggle-thumb.dark { transform: translateX(40px); } /* 80px (ancho) - 8px (padding) - 32px (ancho thumb) = 40px */
-
-.sun-icon, .moon-icon {
-  position: relative;
-  z-index: 1;
+.theme-icon {
   color: var(--muted);
-  transition: color 0.3s ease;
+  transition: all 0.25s ease;
 }
 
-.sun-icon.active { color: #FACC15; } /* Amarillo para el sol en modo claro */
-.moon-icon.active { color: #A855F7; } /* Morado para la luna en modo oscuro */
+.theme-icon:hover {
+  transform: scale(1.15);
+}
+
+.theme-toggle.light .sun {
+  color: #FACC15;
+}
+
+.theme-toggle.dark .moon {
+  color: #A855F7;
+}
