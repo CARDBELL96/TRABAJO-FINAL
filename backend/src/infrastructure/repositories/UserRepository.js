@@ -9,7 +9,7 @@ class UserRepository extends IUserRepository {
     request.input("email", sql.VarChar, email);
 
     const result = await request.query(`
-      SELECT id, nombre, email, password, rol, fecha_creacion
+      SELECT id, nombre, email, rol, fecha_creacion, password
       FROM usuarios
       WHERE email = @email
     `);
@@ -31,7 +31,7 @@ class UserRepository extends IUserRepository {
 
     const result = await request.query(`
       INSERT INTO usuarios (nombre, email, password, rol)
-      OUTPUT INSERTED.id, INSERTED.nombre, INSERTED.email, INSERTED.password, INSERTED.rol, INSERTED.fecha_creacion
+      OUTPUT INSERTED.id, INSERTED.nombre, INSERTED.email, INSERTED.rol, INSERTED.fecha_creacion
       VALUES (@nombre, @email, @password, @rol)
     `);
 
@@ -40,4 +40,3 @@ class UserRepository extends IUserRepository {
 }
 
 export default UserRepository;
-
