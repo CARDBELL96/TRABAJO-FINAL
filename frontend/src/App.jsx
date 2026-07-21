@@ -1,12 +1,11 @@
 import AppRoutes from './routes/AppRoutes';
+
+import './styles/app.css';
 import './styles/global-improvements.css';
 
 function App() {
   return (
-    <>
-      {/* Los estilos globales se aplican aquí */}
-      <AppRoutes />
-    </>
+    <AppRoutes />
   );
 }
 

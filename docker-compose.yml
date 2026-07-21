@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: taskflow-backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - DB_SERVER=host.docker.internal
+      - DB_USER=ADMINISTRADOR
+      - DB_PASSWORD=12345678
+      - DB_DATABASE=TaskFlowDB
+      - DB_PORT=1433
+      - JWT_SECRET=clave_secreta_para_tesis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - taskflow-net
+
+  frontend:
+    build: ./frontend
+    container_name: taskflow-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - taskflow-net
+
+networks:
+  taskflow-net:
+    driver: bridge

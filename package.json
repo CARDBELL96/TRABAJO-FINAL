@@ -1,0 +1,23 @@
+{
+  "name": "taskflow",
+  "version": "1.0.0",
+  "description": "TaskFlow - Project and Task Management System",
+  "type": "module",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "build": "cd backend && npm run build && cd ../frontend && npm run build",
+    "test": "cd backend && npm test",
+    "test:watch": "cd backend && npm run test:watch",
+    "test:coverage": "cd backend && npm run test:coverage",
+    "lint": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "project-management",
+    "task-management",
+    "taskflow"
+  ],
+  "author": "",
+  "license": "ISC"
+}

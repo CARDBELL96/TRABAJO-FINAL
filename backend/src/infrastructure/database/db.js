@@ -11,6 +11,8 @@ const dbSettings = {
     trustServerCertificate: true, // Cambiar a false en producción y configurar certificados
   },
   port: env.DB.PORT,
+  connectionTimeout: 30000,
+  requestTimeout: 30000,
 };
 
 export async function connectDB() {

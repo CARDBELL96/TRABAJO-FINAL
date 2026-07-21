@@ -58,6 +58,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .stat-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   border-color: var(--primary-light);
 }
 
@@ -97,6 +98,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .project-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   border-color: var(--primary-light);
 }
 
@@ -241,6 +243,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .kanban-task-card:hover {
   transform: translateY(-2px);
   background-color: color-mix(in srgb, var(--primary) 5%, var(--panel));
+  background-color: color-mix(in srgb, var(--primary) 5%, var(--panel)); /* No se puede resolver sin un preprocesador, pero el navegador lo ignorará si no lo soporta */
 }
 
 .kanban-no-tasks {
@@ -672,6 +675,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: rgba(139,92,246,0.18);
   opacity: 0;
   transition: opacity .18s ease, transform .18s ease;
+  transition: opacity 0.18s ease, transform 0.18s ease;
   z-index: 0;
 }
 
