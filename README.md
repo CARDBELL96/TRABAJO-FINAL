@@ -277,3 +277,43 @@ Año: **2026**
 # 📄 Licencia
 
 Proyecto desarrollado con fines académicos para el curso **Pruebas y Aseguramiento de Calidad de Software**.
+
+
+---
+
+# Spec-Driven Development (OpenSpec)
+
+TaskFlow utiliza un enfoque **Spec-Driven Development (SDD)** para organizar la documentación y trazabilidad del desarrollo.
+
+La estructura implementada basada en OpenSpec permite relacionar:
+
+
+Especificaciones
+|
+v
+Diseño
+|
+v
+Implementación
+|
+v
+Pruebas
+
+
+La documentación del proceso se encuentra organizada mediante:
+
+- `.openspec.yaml` → configuración del proyecto.
+- `proposal.md` → definición y alcance.
+- `design.md` → arquitectura y decisiones técnicas.
+- `tasks.md` → planificación de implementación.
+- `specs/` → especificaciones por módulo.
+
+Módulos documentados:
+
+- Autenticación de usuarios.
+- Gestión de proyectos.
+- Gestión de tareas.
+- Dashboard.
+- Pruebas de software.
+
+---
